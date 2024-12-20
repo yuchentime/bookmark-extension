@@ -1,38 +1,89 @@
-.App {
+/* Global styles for the container */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Navbar styling */
+.navbar {
+  background-color: #333;
+  padding: 15px;
+  color: white;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.navbar h1 {
+  margin: 0;
+  font-size: 2em;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+/* Bookmark panel container */
+.bookmark-panel {
+  margin-top: 30px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 大屏每行4列 */
+  gap: 20px;
+}
+
+@media (max-width: 768px) {
+  .bookmark-panel {
+    grid-template-columns: repeat(3, 1fr); /* 小屏每行3列 */
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+@media (max-width: 480px) {
+  .bookmark-panel {
+    grid-template-columns: repeat(2, 1fr); /* 更小屏每行2列 */
+  }
+}
+
+/* Section title styling */
+.section-title {
+  font-size: 1.8em;
+  margin-bottom: 15px;
+}
+
+/* Styling for the small panel separating each category */
+.panel {
+  background-color: #f4f4f4;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Grid layout for bookmarks */
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr); /* 每个分区内单列 */
+  gap: 15px;
+}
+
+.grid-item {
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #61dafb;
+/* Bookmark card styling */
+.bookmark-card {
+  background-color: white;
+  padding: 5px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  width: 100%;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.bookmark-title {
+  font-size: 1.1em;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.bookmark-url a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.bookmark-url a:hover {
+  text-decoration: underline;
 }
