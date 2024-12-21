@@ -1,6 +1,9 @@
 import React from 'react';
-import './Newtab.css';
-import './Newtab.scss';
+import Bookmark from './components/Bookmark';
+import Partition from './components/Partition';
+import Navbar from './components/Navbar';
+// import './Newtab.css';
+// import './Newtab.scss';
 
 const bookmarks = [
   {
@@ -59,64 +62,44 @@ const bookmarks = [
     url: 'https://twitter.com',
     icon: 'https://twitter.com/favicon.ico',
   },
+  {
+    id: 9,
+    title: 'Nier',
+    type: 'Development',
+    url: 'https://twitter.com',
+    icon: 'https://twitter.com/favicon.ico',
+  },
 ];
 
 const Newtab = () => {
   const types = ['Development', 'Entertainment', 'Reading'];
 
   return (
-    <div className="container">
-      <nav className="navbar">
-        <h1>Bookmark Manager</h1>
-        <input
-          type="text"
-          className="search-bar"
-          placeholder="Search bookmarks..."
-        />
-      </nav>
+    <div
+      className="container"
+      style={{ maxWidth: '1300px', margin: '0 auto', padding: '20px' }}
+    >
+      <Navbar />
 
-      <div className="bookmark-panel">
+      <div
+        className="bookmark-panel"
+        style={{
+          marginTop: '30px',
+          display: 'grid',
+          gridTemplateColumns: '1fr',
+          gridTemplateRows: 'auto',
+          backgroundColor: 'transparent',
+          gridGap: '20px',
+        }}
+      >
         {types.map((type) => (
-          <div className="bookmark-section" key={type}>
-            <div
-              className='section-title'
-            >
-              {type}
-            </div>
-            <div className="panel">
-              <div className="grid-container">
-                {bookmarks
-                  .filter((bookmark) => bookmark.type === type)
-                  .map((bookmark) => (
-                    <div className="grid-item" key={bookmark.id}>
-                      <div className="bookmark-card">
-                        <img
-                          src={bookmark.icon}
-                          alt={bookmark.title}
-                          className="bookmark-icon"
-                        />
-                        <div
-                          className=""
-                          style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            justifyContent: 'start',
-                            alignItems: 'start',
-                          }}
-                        >
-                          <span className="bookmark-title">
-                            {bookmark.title}
-                          </span>
-                          <span className="bookmark-desc">
-                            卡是个为肯定高大师的
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-              </div>
-            </div>
-          </div>
+          <Partition title={type}>
+            {bookmarks
+              .filter((bookmark) => bookmark.type === type)
+              .map((bookmark) => (
+                <Bookmark bookmark={bookmark} />
+              ))}
+          </Partition>
         ))}
       </div>
     </div>
