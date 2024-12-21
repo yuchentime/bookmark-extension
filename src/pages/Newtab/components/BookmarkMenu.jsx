@@ -1,7 +1,17 @@
 import React, { useEffect } from 'react';
+import MenuItem from './MenuItem';
 
 const BookmarkMenu = ({ bookmark, offsetX, offsetY, visible, close }) => {
   const menuRef = React.useRef(null);
+  const [partitions, setPartitions] = React.useState([]);
+  const [showPartitionMenu, setShowPartitionMenu] = React.useState(false);
+  useEffect(() => {
+    chrome.storage.local.get(['partitions'], (result) => {
+      const originalPartitions = JSON.parse(result.partitions);
+      // 去除第一个“最近使用”
+      setPartitions(originalPartitions.slice(1));
+    });
+  }, []);
 
   const handleClickOutside = (e) => {
     if (menuRef.current && !menuRef.current.contains(e.target)) {
@@ -28,10 +38,9 @@ const BookmarkMenu = ({ bookmark, offsetX, offsetY, visible, close }) => {
         left: offsetX,
         top: offsetY + 20,
         backgroundColor: '#ffffff',
-        borderRadius: '8px',
         boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
         padding: '10px 0px',
-        width: '60px',
+        minWidth: '80px',
         zIndex: 1000,
       }}
     >
@@ -45,40 +54,44 @@ const BookmarkMenu = ({ bookmark, offsetX, offsetY, visible, close }) => {
           alignItems: 'center',
         }}
       >
-        <li
-          style={{
-            width: '36px',
-            textAlign: 'center',
-            padding: '8px 12px',
-            cursor: 'pointer',
-            transition: 'background-color 0.3s',
+        <MenuItem>
+          <span>编辑</span>
+        </MenuItem>
+        <MenuItem
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = '#f0f0f0';
+            setShowPartitionMenu(true);
           }}
-          onMouseEnter={(e) =>
-            (e.currentTarget.style.backgroundColor = '#f0f0f0')
-          }
-          onMouseLeave={(e) =>
-            (e.currentTarget.style.backgroundColor = 'transparent')
-          }
-        >
-          编辑
-        </li>
-        <li
-          style={{
-            width: '36px',
-            textAlign: 'center',
-            padding: '8px 12px',
-            cursor: 'pointer',
-            transition: 'background-color 0.3s',
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = 'transparent';
+            setShowPartitionMenu(false);
           }}
-          onMouseEnter={(e) =>
-            (e.currentTarget.style.backgroundColor = '#f0f0f0')
-          }
-          onMouseLeave={(e) =>
-            (e.currentTarget.style.backgroundColor = 'transparent')
-          }
         >
-          删除
-        </li>
+          <span>移动至</span>
+          {showPartitionMenu && (
+            <ul
+              style={{
+                position: 'absolute',
+                top: '42px',
+                left: '100%',
+                backgroundColor: '#ffffff',
+                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                padding: '10px 0px',
+                minWidth: '80px',
+                listStyleType: 'none',
+              }}
+            >
+              {partitions.map((partition, index) => (
+                <MenuItem minWidth="80px">
+                  <span>{partition.name}</span>
+                </MenuItem>
+              ))}
+            </ul>
+          )}
+        </MenuItem>
+        <MenuItem>
+          <span>删除</span>
+        </MenuItem>
       </ul>
     </div>
   );
