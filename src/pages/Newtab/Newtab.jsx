@@ -1,82 +1,20 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Bookmark from './components/Bookmark';
 import Partition from './components/Partition';
 import Navbar from './components/Navbar';
-// import './Newtab.css';
-// import './Newtab.scss';
-
-const bookmarks = [
-  {
-    id: 1,
-    title: 'React Documentation',
-    type: 'Development',
-    url: 'https://reactjs.org',
-    icon: 'https://reactjs.org/favicon.ico',
-  },
-  {
-    id: 2,
-    title: 'MDN Web Docs',
-    type: 'Development',
-    url: 'https://developer.mozilla.org',
-    icon: 'https://developer.mozilla.org/favicon.ico',
-  },
-  {
-    id: 3,
-    title: 'YouTube',
-    type: 'Entertainment',
-    url: 'https://youtube.com',
-    icon: 'https://youtube.com/favicon.ico',
-  },
-  {
-    id: 4,
-    title: 'Medium',
-    type: 'Reading',
-    url: 'https://medium.com',
-    icon: 'https://medium.com/favicon.ico',
-  },
-  {
-    id: 5,
-    title: 'Stack Overflow',
-    type: 'Development',
-    url: 'https://stackoverflow.com',
-    icon: 'https://stackoverflow.com/favicon.ico',
-  },
-  {
-    id: 6,
-    title: 'Netflix',
-    type: 'Entertainment',
-    url: 'https://netflix.com',
-    icon: 'https://netflix.com/favicon.ico',
-  },
-  {
-    id: 7,
-    title: 'GitHub',
-    type: 'Development',
-    url: 'https://github.com',
-    icon: 'https://github.com/favicon.ico',
-  },
-  {
-    id: 8,
-    title: 'Twitter',
-    type: 'Entertainment',
-    url: 'https://twitter.com',
-    icon: 'https://twitter.com/favicon.ico',
-  },
-  {
-    id: 9,
-    title: 'Nier',
-    type: 'Development',
-    url: 'https://twitter.com',
-    icon: 'https://twitter.com/favicon.ico',
-  },
-];
 
 const Newtab = () => {
-  const partitionObjects = [
-    { type: 'Development', order: 1 },
-    { type: 'Entertainment', order: 2 },
-    { type: 'Reading', order: 3 },
-  ];
+  const [partitions, setPartitions] = React.useState([]);
+  const [bookmarks, setBookmarks] = React.useState([]);
+
+  useEffect(() => {
+    chrome.storage.local.get(['bookmarks', 'partitions'], (result) => {
+      console.log('bookmarks: ', result.bookmarks);
+      console.log('partitions: ', result.partitions);
+      setBookmarks(JSON.parse(result.bookmarks));
+      setPartitions(JSON.parse(result.partitions))
+    });
+  }, []);
 
   return (
     <div
@@ -96,12 +34,12 @@ const Newtab = () => {
           gridGap: '20px',
         }}
       >
-        {partitionObjects.map((partitionObject) => (
-          <Partition title={partitionObject.type}>
+        {partitions.map((partition) => (
+          <Partition title={partition.name}>
             {bookmarks
-              .filter((bookmark) => bookmark.type === partitionObject.type)
+              .filter((bookmark) => bookmark.type === partition.name)
               .map((bookmark) => (
-                <Bookmark bookmark={bookmark} />
+                <Bookmark bookmark={bookmark} key={bookmark.path} />
               ))}
           </Partition>
         ))}

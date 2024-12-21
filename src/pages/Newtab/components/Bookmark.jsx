@@ -4,7 +4,8 @@ const Bookmark = ({ bookmark }) => {
   return (
     <div
       className="grid-item"
-      key={bookmark.id}
+      key={bookmark.title}
+      onClick={() => window.open(bookmark.url)}
       style={{ display: 'flex', justifyContent: 'center', cursor: 'default' }}
     >
       <div
@@ -15,13 +16,13 @@ const Bookmark = ({ bookmark }) => {
           flexDirection: 'row',
           justifyContent: 'start',
           gap: '5px',
-          alignItems: 'center',  // 修改为居中对齐
+          alignItems: 'center', // 修改为居中对齐
           backgroundColor: 'white',
           padding: '15px',
           boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',
           width: '100%',
           textAlign: 'center',
-          borderRadius: '8px',  // 添加圆角效果
+          borderRadius: '8px', // 添加圆角效果
           transition: 'transform 0.3s, box-shadow 0.3s, background-color 0.3s', // 添加平滑过渡效果
         }}
         onMouseEnter={(e) => {
@@ -41,29 +42,45 @@ const Bookmark = ({ bookmark }) => {
           className="bookmark-icon"
           style={{ width: '48px', height: '48px' }}
         />
+
         <div
           className=""
           style={{
             display: 'flex',
+            width: "220px",
             flexDirection: 'column',
             justifyContent: 'start',
             alignItems: 'start',
           }}
         >
-      <span
-        className="bookmark-title"
-        style={{
-          fontSize: '1.3em',
-          fontWeight: 'bold',
-        }}
-      >
-        {bookmark.title}
-      </span>
-          <span className="bookmark-desc">卡是个为肯定高大师的</span>
+          <span
+            className="bookmark-title"
+            style={{
+              fontSize: bookmark.title.split('\n').length > 1 ? '1em' : '1.3em',
+              fontWeight: 'bold',
+              textAlign: 'left',
+              overflow: 'hidden', // 超出部分隐藏
+              display: '-webkit-box',
+              WebkitBoxOrient: 'vertical',
+              WebkitLineClamp: 1, // 限制为两行
+            }}
+          >
+            {bookmark.title}
+          </span>
+          <span
+            className="bookmark-desc"
+            style={{
+              display: '-webkit-box',
+              WebkitBoxOrient: 'vertical',
+              WebkitLineClamp: 2, // 限制为两行
+              overflow: 'hidden', // 超出部分隐藏
+            }}
+          >
+            卡是个为肯定高大师的
+          </span>
         </div>
       </div>
     </div>
-
   );
 };
 
