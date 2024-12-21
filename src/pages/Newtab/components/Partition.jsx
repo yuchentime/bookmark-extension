@@ -1,5 +1,5 @@
 import React from 'react';
-import partitionMenu from '/src/assets/img/partition_menu';
+// import partitionMenu from '/src/assets/img/partition_menu';
 
 const Partition = ({ title, children }) => {
   return (
@@ -22,14 +22,14 @@ const Partition = ({ title, children }) => {
         }}
       >
         <span>{title}</span>
-        <img
-          src={partitionMenu}
-          width={20}
-          height={20}
-          style={{
-            cursor: 'pointer',
-          }}
-        />
+        {/*<img*/}
+        {/*  src={partitionMenu}*/}
+        {/*  width={20}*/}
+        {/*  height={20}*/}
+        {/*  style={{*/}
+        {/*    cursor: 'pointer',*/}
+        {/*  }}*/}
+        {/*/>*/}
       </div>
       <div
         className="grid-container"

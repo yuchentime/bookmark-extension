@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-const Bookmark = ({ bookmark }) => {
+const Bookmark = ({ bookmark, openPopupMenu }) => {
+  const [showMenuIcon, setShowMenuIcon] = useState(false);
   return (
     <div
       className="grid-item"
@@ -29,11 +30,13 @@ const Bookmark = ({ bookmark }) => {
           e.currentTarget.style.transform = 'scale(1.02)'; // 鼠标进入时放大
           e.currentTarget.style.boxShadow = '0 4px 10px rgba(0, 0, 0, 0.2)'; // 增加阴影
           e.currentTarget.style.backgroundColor = '#f0f0f0'; // 改变背景色
+          setShowMenuIcon(true);
         }}
         onMouseLeave={(e) => {
           e.currentTarget.style.transform = 'scale(1)'; // 鼠标离开时恢复原状
           e.currentTarget.style.boxShadow = '0 2px 5px rgba(0, 0, 0, 0.1)'; // 恢复阴影
           e.currentTarget.style.backgroundColor = 'white'; // 恢复背景色
+          setShowMenuIcon(false);
         }}
       >
         <img
@@ -47,7 +50,7 @@ const Bookmark = ({ bookmark }) => {
           className=""
           style={{
             display: 'flex',
-            width: "220px",
+            width: '220px',
             flexDirection: 'column',
             justifyContent: 'start',
             alignItems: 'start',
@@ -78,6 +81,24 @@ const Bookmark = ({ bookmark }) => {
           >
             卡是个为肯定高大师的
           </span>
+        </div>
+
+        <div style={{ height: '48px' }}>
+          {showMenuIcon && (
+            <span
+              onClick={(e) => {
+                e.stopPropagation(); // 防止事件冒泡
+                openPopupMenu(true, e.clientX, e.clientY);
+              }}
+              style={{
+                cursor: 'pointer',
+                fontSize: '20px',
+                color: '#007bff',
+              }}
+            >
+              ⋮
+            </span>
+          )}
         </div>
       </div>
     </div>

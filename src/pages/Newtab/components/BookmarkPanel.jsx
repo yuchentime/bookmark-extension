@@ -1,8 +1,14 @@
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useState } from 'react';
 import Partition from './Partition'; // 假设 Partition 组件已存在
 import Bookmark from './Bookmark';
+import BookmarkMenu from './BookmarkMenu';
 
 const BookmarkPanel = forwardRef(({ partitions, bookmarks }, ref) => {
+  const [showMenu, setShowMenu] = useState(false);
+  const [offsetX, setOffsetX] = useState(0);
+  const [offsetY, setOffsetY] = useState(0);
+  const [bookmark, setBookmark] = useState([]);
+
   return (
     <div
       style={{
@@ -16,12 +22,11 @@ const BookmarkPanel = forwardRef(({ partitions, bookmarks }, ref) => {
       <div
         className="container"
         style={{
-          maxWidth: '1300px',
+          maxWidth: '1330px',
           margin: '0 auto',
           padding: '20px',
         }}
       >
-
         {/*<h1*/}
         {/*  style={{*/}
         {/*    fontSize: '24px',*/}
@@ -50,13 +55,29 @@ const BookmarkPanel = forwardRef(({ partitions, bookmarks }, ref) => {
                 {bookmarks
                   .filter((bookmark) => bookmark.type === partition.name)
                   .map((bookmark) => (
-                    <Bookmark bookmark={bookmark} key={bookmark.path} />
+                    <Bookmark
+                      key={bookmark.path}
+                      bookmark={bookmark}
+                      openPopupMenu={(visible, x, y) => {
+                        setOffsetX(x);
+                        setOffsetY(y);
+                        setShowMenu(visible);
+                        setBookmark(bookmark)
+                      }}
+                    />
                   ))}
               </Partition>
             </div>
           ))}
         </div>
       </div>
+
+      {/*<BookmarkMenu*/}
+      {/*  bookmark={bookmark}*/}
+      {/*  offsetX={offsetX}*/}
+      {/*  offsetY={offsetY}*/}
+      {/*  visible={showMenu}*/}
+      {/*/>*/}
     </div>
   );
 });
