@@ -1,49 +1,33 @@
-import React, { useEffect } from 'react';
-import Bookmark from './components/Bookmark';
-import Partition from './components/Partition';
+import React, { useEffect, useRef, useState } from 'react';
+import PartitionMenu from './components/PartitionMenu';
+import BookmarkPanel from './components/BookmarkPanel';
 import Navbar from './components/Navbar';
 
 const Newtab = () => {
-  const [partitions, setPartitions] = React.useState([]);
-  const [bookmarks, setBookmarks] = React.useState([]);
+  const [partitions, setPartitions] = useState([]);
+  const [bookmarks, setBookmarks] = useState([]);
+
+  const partitionRefs = useRef([]); // 用于存储每个 Partition 的 ref
+  const handleMenuClick = (index) => {
+    partitionRefs.current[index].scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
 
   useEffect(() => {
     chrome.storage.local.get(['bookmarks', 'partitions'], (result) => {
       console.log('bookmarks: ', result.bookmarks);
       console.log('partitions: ', result.partitions);
       setBookmarks(JSON.parse(result.bookmarks));
-      setPartitions(JSON.parse(result.partitions))
+      setPartitions(JSON.parse(result.partitions));
     });
   }, []);
 
   return (
-    <div
-      className="container"
-      style={{ maxWidth: '1300px', margin: '0 auto', padding: '20px' }}
-    >
-      <Navbar />
+    <div style={{ display: 'flex', position: 'fixed', top: 0, left: 0, width: '100%', height: '100%' }}>
+      {/* 左侧菜单 */}
+      <PartitionMenu partitions={partitions} onMenuClick={(index) => handleMenuClick(index)} />
 
-      <div
-        className="bookmark-panel"
-        style={{
-          marginTop: '30px',
-          display: 'grid',
-          gridTemplateColumns: '1fr',
-          gridTemplateRows: 'auto',
-          backgroundColor: 'transparent',
-          gridGap: '20px',
-        }}
-      >
-        {partitions.map((partition) => (
-          <Partition title={partition.name}>
-            {bookmarks
-              .filter((bookmark) => bookmark.type === partition.name)
-              .map((bookmark) => (
-                <Bookmark bookmark={bookmark} key={bookmark.path} />
-              ))}
-          </Partition>
-        ))}
-      </div>
+      {/* 右侧书签面板 */}
+      <BookmarkPanel partitions={partitions} bookmarks={bookmarks} ref={partitionRefs} />
     </div>
   );
 };
