@@ -65,6 +65,7 @@ const Bookmark = ({ bookmark, openPopupMenu }) => {
           style={{
             display: 'flex',
             width: '190px',
+            height: '48px',
             flexDirection: 'column',
             justifyContent: 'start',
             alignItems: 'start',
@@ -93,7 +94,7 @@ const Bookmark = ({ bookmark, openPopupMenu }) => {
               overflow: 'hidden', // 超出部分隐藏
             }}
           >
-            卡是个为肯定高大师的
+            {bookmark.description}
           </span>
         </div>
 

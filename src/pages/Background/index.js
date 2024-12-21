@@ -53,6 +53,7 @@ function getAllBookmarksWithHierarchy(bookmarkNodes) {
         url: node.url,
         type: path[path.length - 1],
         icon: nodeUrl.protocol + '//' + nodeUrl.hostname + '/favicon.ico',
+        description: '',
       });
     }
     if (node.children) {
