@@ -72,7 +72,11 @@ const bookmarks = [
 ];
 
 const Newtab = () => {
-  const types = ['Development', 'Entertainment', 'Reading'];
+  const partitionObjects = [
+    { type: 'Development', order: 1 },
+    { type: 'Entertainment', order: 2 },
+    { type: 'Reading', order: 3 },
+  ];
 
   return (
     <div
@@ -92,10 +96,10 @@ const Newtab = () => {
           gridGap: '20px',
         }}
       >
-        {types.map((type) => (
-          <Partition title={type}>
+        {partitionObjects.map((partitionObject) => (
+          <Partition title={partitionObject.type}>
             {bookmarks
-              .filter((bookmark) => bookmark.type === type)
+              .filter((bookmark) => bookmark.type === partitionObject.type)
               .map((bookmark) => (
                 <Bookmark bookmark={bookmark} />
               ))}

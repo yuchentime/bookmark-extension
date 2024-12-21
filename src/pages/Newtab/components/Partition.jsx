@@ -1,4 +1,5 @@
 import React from 'react';
+import partitionMenu from '/src/assets/img/partition_menu';
 
 const Partition = ({ title, children }) => {
   return (
@@ -11,6 +12,7 @@ const Partition = ({ title, children }) => {
         className="section-title"
         style={{
           display: 'flex',
+          justifyContent: 'space-between',
           alignItems: 'center',
           fontSize: '1.8em',
           padding: '5px',
@@ -19,7 +21,15 @@ const Partition = ({ title, children }) => {
           borderTopRightRadius: '8px',
         }}
       >
-        {title}
+        <span>{title}</span>
+        <img
+          src={partitionMenu}
+          width={20}
+          height={20}
+          style={{
+            cursor: 'pointer',
+          }}
+        />
       </div>
       <div
         className="grid-container"
@@ -40,4 +50,4 @@ const Partition = ({ title, children }) => {
   );
 };
 
-export default Partition
+export default Partition;
