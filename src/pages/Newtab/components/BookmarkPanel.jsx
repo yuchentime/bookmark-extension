@@ -62,7 +62,7 @@ const BookmarkPanel = forwardRef(({ partitions, bookmarks }, ref) => {
                         setOffsetX(x);
                         setOffsetY(y);
                         setShowMenu(visible);
-                        setBookmark(bookmark)
+                        setBookmark(bookmark);
                       }}
                     />
                   ))}
@@ -70,14 +70,15 @@ const BookmarkPanel = forwardRef(({ partitions, bookmarks }, ref) => {
             </div>
           ))}
         </div>
-      </div>
 
-      {/*<BookmarkMenu*/}
-      {/*  bookmark={bookmark}*/}
-      {/*  offsetX={offsetX}*/}
-      {/*  offsetY={offsetY}*/}
-      {/*  visible={showMenu}*/}
-      {/*/>*/}
+        <BookmarkMenu
+          bookmark={bookmark}
+          offsetX={offsetX}
+          offsetY={offsetY}
+          visible={showMenu}
+          close={() => setShowMenu(false)}
+        />
+      </div>
     </div>
   );
 });

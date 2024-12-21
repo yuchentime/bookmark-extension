@@ -18,8 +18,6 @@ const Newtab = () => {
 
   useEffect(() => {
     chrome.storage.local.get(['bookmarks', 'partitions'], (result) => {
-      console.log('bookmarks: ', result.bookmarks);
-      console.log('partitions: ', result.partitions);
       setBookmarks(JSON.parse(result.bookmarks));
       setPartitions(JSON.parse(result.partitions));
     });

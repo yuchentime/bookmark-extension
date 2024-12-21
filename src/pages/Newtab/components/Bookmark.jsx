@@ -1,7 +1,21 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 const Bookmark = ({ bookmark, openPopupMenu }) => {
   const [showMenuIcon, setShowMenuIcon] = useState(false);
+  const menuRef = useRef(null);
+
+  const handleClickMenu = (e) => {
+    e.stopPropagation();
+    const rect = menuRef.current.getBoundingClientRect();
+    // 获取元素相对于视口的坐标
+    const scrollY = window.scrollY || window.pageYOffset;
+    // 计算元素相对于文档顶部的坐标
+    const offsetY = Math.floor(rect.top + scrollY + 10);
+
+    const scrollX = window.scrollX || window.pageXOffset;
+    const offsetX = Math.floor(rect.left + scrollX);
+    openPopupMenu(true, offsetX, offsetY);
+  };
   return (
     <div
       className="grid-item"
@@ -50,7 +64,7 @@ const Bookmark = ({ bookmark, openPopupMenu }) => {
           className=""
           style={{
             display: 'flex',
-            width: '220px',
+            width: '190px',
             flexDirection: 'column',
             justifyContent: 'start',
             alignItems: 'start',
@@ -83,15 +97,18 @@ const Bookmark = ({ bookmark, openPopupMenu }) => {
           </span>
         </div>
 
-        <div style={{ height: '48px' }}>
+        <div
+          ref={menuRef}
+          style={{
+            height: '24px',
+            width: '24px',
+            cursor: 'pointer',
+          }}
+          onClick={handleClickMenu}
+        >
           {showMenuIcon && (
             <span
-              onClick={(e) => {
-                e.stopPropagation(); // 防止事件冒泡
-                openPopupMenu(true, e.clientX, e.clientY);
-              }}
               style={{
-                cursor: 'pointer',
                 fontSize: '20px',
                 color: '#007bff',
               }}
