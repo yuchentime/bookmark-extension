@@ -5,9 +5,6 @@ import BookmarkPanel from './components/BookmarkPanel';
 const Newtab = () => {
   const [partitions, setPartitions] = useState([]);
   const [bookmarks, setBookmarks] = useState([]);
-  // 使用 React 状态来控制菜单的显示与隐藏
-  const [isVisible, setIsVisible] = useState(true);
-
   const partitionRefs = useRef([]); // 用于存储每个 Partition 的 ref
   const handleMenuClick = (index) => {
     partitionRefs.current[index].scrollIntoView({
@@ -44,7 +41,6 @@ const Newtab = () => {
         partitions={partitions}
         bookmarks={bookmarks}
         ref={partitionRefs}
-        visible={{ isVisible }}
       />
     </div>
   );

@@ -5,6 +5,7 @@ const BookmarkMenu = ({ bookmark, offsetX, offsetY, visible, close }) => {
   const menuRef = React.useRef(null);
   const [partitions, setPartitions] = React.useState([]);
   const [showPartitionMenu, setShowPartitionMenu] = React.useState(false);
+
   useEffect(() => {
     chrome.storage.local.get(['partitions'], (result) => {
       const originalPartitions = JSON.parse(result.partitions);
@@ -25,6 +26,15 @@ const BookmarkMenu = ({ bookmark, offsetX, offsetY, visible, close }) => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
+
+  const moveToPartition = (id, parentId) => {
+    chrome.runtime
+      .sendMessage({ action: 'moveBookmark', id, parentId })
+      .then((result) => {
+        console.log('移动标签处理结果：', result);
+        window.location.reload();
+      });
+  };
 
   if (!visible) {
     return null;
@@ -82,7 +92,10 @@ const BookmarkMenu = ({ bookmark, offsetX, offsetY, visible, close }) => {
               }}
             >
               {partitions.map((partition, index) => (
-                <MenuItem minWidth="80px">
+                <MenuItem
+                  minWidth="80px"
+                  onClick={() => moveToPartition(bookmark.id, partition.id)}
+                >
                   <span>{partition.name}</span>
                 </MenuItem>
               ))}

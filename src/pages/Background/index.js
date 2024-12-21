@@ -1,19 +1,29 @@
 // background.js
 let cachedBookmarks = [];
-let cachedPartitions = [];
 
 // 获取所有书签并缓存
 function fetchBookmarks() {
   chrome.bookmarks.getTree((bookmarkTreeNodes) => {
     cachedBookmarks = getAllBookmarksWithHierarchy(bookmarkTreeNodes);
-    // console.log('Bookmarks fetched and cached:', cachedBookmarks);
+    console.log('Bookmarks fetched and cached:', cachedBookmarks);
     // 需要特别注意：用户可能修改了分区的顺序、书签的描述信息等等，因此不能覆盖已有的数据
-    const allPartitions = cachedBookmarks.map((bookmark) => bookmark.type);
-    cachedPartitions = allPartitions
-      .filter((value, index, self) => self.indexOf(value) === index)
-      .map((type, index) => ({ order: index + 1, name: type }));
-    const newPartitions = [{ order: 0, name: '最近使用' }, ...cachedPartitions];
+    const partitions = [];
+    let index = 1;
+    for (const bookmark of cachedBookmarks) {
+      const partition = partitions.find(
+        (partition) => partition.name === bookmark.type
+      );
+      if (partition) {
+        continue;
+      }
+      partitions.push({
+        order: index++,
+        name: bookmark.type,
+        id: bookmark.parentId,
+      });
+    }
 
+    const newPartitions = [{ order: 0, name: '最近使用' }, ...partitions];
     chrome.storage.local.set(
       { partitions: JSON.stringify(newPartitions) },
       () => {
@@ -72,7 +82,9 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       parentId: request.parentId,
     };
     chrome.bookmarks.move(request.id, destination, () => {
+      console.log('Bookmark moved successfully.');
       fetchBookmarks();
+      sendResponse(true);
     });
     return true;
   } else if (request.action === 'renameBookmark') {
@@ -85,7 +97,5 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     chrome.bookmarks.remove(request.id, () => {
       fetchBookmarks();
     });
-  } else if (request.action === 'getPartitions') {
-    sendResponse(cachedPartitions);
   }
 });
