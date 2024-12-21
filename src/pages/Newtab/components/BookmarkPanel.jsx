@@ -1,6 +1,6 @@
-import React, { forwardRef, useRef } from 'react';
+import React, { forwardRef } from 'react';
 import Partition from './Partition'; // 假设 Partition 组件已存在
-import Bookmark from './Bookmark'; // 假设 Bookmark 组件已存在
+import Bookmark from './Bookmark';
 
 const BookmarkPanel = forwardRef(({ partitions, bookmarks }, ref) => {
   return (
@@ -10,7 +10,7 @@ const BookmarkPanel = forwardRef(({ partitions, bookmarks }, ref) => {
         display: 'flex',
         justifyContent: 'center',
         flex: 1,
-        overflowY: 'auto', // 防止右侧内容溢出
+        overflowY: 'auto',
       }}
     >
       <div
@@ -21,6 +21,18 @@ const BookmarkPanel = forwardRef(({ partitions, bookmarks }, ref) => {
           padding: '20px',
         }}
       >
+
+        {/*<h1*/}
+        {/*  style={{*/}
+        {/*    fontSize: '24px',*/}
+        {/*    fontWeight: 'bold',*/}
+        {/*    marginBottom: '20px',*/}
+        {/*    textAlign: 'center',*/}
+        {/*  }}*/}
+        {/*>*/}
+        {/*  搜索框*/}
+        {/*</h1>*/}
+
         <div
           className="bookmark-panel"
           style={{
